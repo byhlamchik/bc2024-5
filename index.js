@@ -49,3 +49,22 @@ app.post('/write', upload.none(), (req, res) => {
     fs.writeFileSync(notePath, noteText, 'utf-8');
     res.status(201).send('Note created');
 });
+app.put('/notes/:name', (req, res, next) => {
+    if (req.is('application/json')) {
+        express.json()(req, res, next);
+    } else if (req.is('text/plain')) {
+        express.text()(req, res, next);
+    } else {
+        res.status(415).send('Unsupported Media Type');
+    }
+}, (req, res) => {
+    const notePath = path.join(cache, req.params.name + '.txt');
+
+    if (fs.existsSync(notePath)) {
+        const noteContent = typeof req.body === 'object' ? JSON.stringify(req.body) : req.body;
+        fs.writeFileSync(notePath, noteContent, 'utf-8');
+        res.status(200).send('Note updated');
+    } else {
+        res.status(404).send('Note not found');
+    }
+});
