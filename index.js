@@ -87,3 +87,6 @@ app.get('/notes', (req, res) => {
     });
     res.status(200).json(notes);
 });
+app.listen(port, host, () => {
+    console.log(`Server is running at http://${host}:${port}`);
+});
