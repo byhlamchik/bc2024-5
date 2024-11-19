@@ -20,3 +20,12 @@ app.use(express.urlencoded({ extended: true }));
 app.get('/UploadForm.html', (req, res) => {
     res.sendFile(path.join(__dirname, 'UploadForm.html'));
 });
+app.get('/notes/:name', (req, res) => {
+    const notePath = path.join(cache, req.params.name + '.txt');
+    if (fs.existsSync(notePath)) {
+        const noteContent = fs.readFileSync(notePath, 'utf-8');
+        res.status(200).send(noteContent);
+    } else {
+        res.status(404).send('Note not found');
+    }
+});
