@@ -68,3 +68,12 @@ app.put('/notes/:name', (req, res, next) => {
         res.status(404).send('Note not found');
     }
 });
+app.delete('/notes/:name', (req, res) => {
+    const notePath = path.join(cache, req.params.name + '.txt');
+    if (fs.existsSync(notePath)) {
+        fs.unlinkSync(notePath);
+        res.status(200).send('Note deleted');
+    } else {
+        res.status(404).send('Note not found');
+    }
+});
