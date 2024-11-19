@@ -77,3 +77,13 @@ app.delete('/notes/:name', (req, res) => {
         res.status(404).send('Note not found');
     }
 });
+app.get('/notes', (req, res) => {
+    const notes = fs.readdirSync(cache).map(file => {
+        const noteContent = fs.readFileSync(path.join(cache, file), 'utf-8');
+        return {
+            name: path.basename(file, '.txt'),
+            text: noteContent
+        };
+    });
+    res.status(200).json(notes);
+});
