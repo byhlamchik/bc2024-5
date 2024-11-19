@@ -15,3 +15,5 @@ const { host, port, cache } = program.opts();
 if (!fs.existsSync(cache)) {
     fs.mkdirSync(cache, { recursive: true });
 }
+const app = express();
+app.use(express.urlencoded({ extended: true }));
