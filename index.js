@@ -29,3 +29,23 @@ app.get('/notes/:name', (req, res) => {
         res.status(404).send('Note not found');
     }
 });
+const upload = multer();
+
+app.post('/write', upload.none(), (req, res) => {
+    console.log(req.body);
+    const noteName = req.body.note_name;
+    const noteText = req.body.note;
+
+    if (!noteName || !noteText) {
+        return res.status(400).send('Note name and text are required');
+    }
+
+    const notePath = path.join(cache, `${noteName}.txt`);
+
+    if (fs.existsSync(notePath)) {
+        return res.status(400).send('Note with this name already exists');
+    }
+
+    fs.writeFileSync(notePath, noteText, 'utf-8');
+    res.status(201).send('Note created');
+});
