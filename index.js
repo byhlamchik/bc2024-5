@@ -17,3 +17,6 @@ if (!fs.existsSync(cache)) {
 }
 const app = express();
 app.use(express.urlencoded({ extended: true }));
+app.get('/UploadForm.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'UploadForm.html'));
+});
